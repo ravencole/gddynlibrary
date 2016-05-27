@@ -10,7 +10,7 @@ const auth = () => {
     const login = (token) => {
         localStorage.token = token;
 
-        return false;
+        return true;
     }
 
     const logout = () => {
