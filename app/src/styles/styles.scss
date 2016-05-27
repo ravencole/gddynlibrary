@@ -1,0 +1,35 @@
+// Shop stuff
+@import 'fonts';
+@import 'mixins';
+@import 'colors';
+
+// Partials
+@import 'bookListItems';
+@import 'bookDetails';
+@import 'nav';
+@import 'landingPage';
+@import 'editBookForm';
+@import 'createBook';
+@import 'home';
+@import 'search';
+@import 'signin';
+
+// Generics
+* {
+    box-sizing: border-box;
+    font-family: Cabin, Arial, sans-serif;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.main--container {
+    padding-top: 80px;
+}

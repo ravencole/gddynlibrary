@@ -1,0 +1,33 @@
+.subnav--container {
+    height: 30px;
+    width: 100%;
+    display: flex;
+    position: fixed;
+    padding: 0px 8em;
+    top: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-collapse: collapse;
+    background-color: white;
+}
+
+.subnav--item {
+    @include flex(center, center);
+    height: 100%;
+    flex: 1;
+    border-bottom: 1px solid $grey;
+    transition: all 200ms ease;
+    border-right: 1px solid $grey;
+    &:last-child {
+        border-right: 0px solid $grey;
+    }
+    &:hover {
+        background-color: $lightGrey;
+        color: black;
+        cursor: pointer;
+    }
+}
+
+.home--children__container {
+    padding-top: 35px;
+}

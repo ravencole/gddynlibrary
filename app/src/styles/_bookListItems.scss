@@ -1,0 +1,63 @@
+.item--container {
+    @include flex(center, flex-start);
+    height: 30px;
+    width: 100%;
+    border: 1px solid black;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th {
+    background-color: black;
+    color: white;
+    padding: 20px auto;
+    border-color: #DDD;
+    &.table--order {
+        transition: all 200ms ease;
+        &:hover {
+            background-color: $blue;
+            color: black;
+        }
+    }
+}
+
+td {
+    font-family: Old Standard TT;
+    padding: 10px;
+}
+
+tr {
+    transition: all 200ms ease;
+    &:hover {
+        background-color: $blue;
+        cursor: pointer;
+        & td.td--check__loaned {
+            color: lighten($blue, 7);
+        }
+    }
+}
+
+.td--check__borrowed {
+    color: $orange;
+}
+
+.td--check__loaned {
+    color: $blue;
+}
+
+.td--check {
+    text-align: center;
+    transition: all 200ms ease;
+    font-size: 34px;
+}
+
+.td--center {
+    text-align: center;
+}
+
+.bookList--container {
+    width: 95%;
+    margin: 0px auto 50px auto;
+}

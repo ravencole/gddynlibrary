@@ -1,0 +1,44 @@
+.createBook--container__main {
+    @include flex(center, center);
+}
+
+.createBook--container {
+    width: 300px;
+    font-size: 25px;
+    margin-bottom: 100px;
+    & input, textarea {
+        font-size: 19px;
+        width: 100%;
+    }
+    & .textarea {
+        font-size: 15px;
+        height: 200px;
+    }
+}
+
+.createBook--btn {
+    @include flex(center, center);
+    margin-top: 20px;
+    height: 50px;
+    width: 100%;
+    outline: 1px solid;
+    outline-color: $green;
+    transition: all 500ms ease;
+    &:hover {
+        outline: 7px solid white;
+        cursor: pointer;
+        background-color: $green;
+    }
+}
+
+.small--text {
+    font-size: 12px;
+}
+
+.create--required {
+    box-shadow: 0 0 5px 0 red;
+}
+
+
+
+

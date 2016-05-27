@@ -1,0 +1,177 @@
+.editForm--container {
+    @include flex(flex-start, center);
+    padding-top: 30px;
+}
+
+.left--container {
+    flex: 1;
+    @include flex(flex-end, flex-start);
+    flex-direction: column;
+    padding-right: 20px;
+}
+
+.form--container {
+    flex: 1;
+    padding-left: 20px;
+    & * {
+        margin-top: 20px;
+    }
+}
+ 
+.imageUpload--form {
+    @include flex(flex-start, center);
+    flex-direction: column;
+    padding-left: 20px;
+}
+
+.cover--container {
+    position: relative;
+    & .edit--image {
+        position: absolute;     
+        background-color: rgba(0,0,0,.5);
+        color: white;
+        border: 1px solid white;
+        transition: all 300ms ease;
+        @include flex(center, flex-start);
+        flex-direction: column;
+        & div {
+            @include flex(center, center);
+            height: 30px;
+        }
+    }
+    &:hover .edit--image {
+        opacity: 1;
+        cursor: pointer;
+    }
+}
+
+.overlay--active {
+    opacity: 1;
+}
+
+.overlay--inactive {
+    opacity: 0;
+}
+
+.image--standin {
+    height: 400px;
+    width: 275px;
+    border: 1px solid black;
+}
+
+.upload--inactive {
+    height: 30px;
+    width: 80%;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.upload--active {
+    @include flex(center, flex-start);
+    padding-top: 40px;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    & > * {
+        margin: 15px 0;
+    }
+}
+
+input {
+    outline: 0;
+}
+
+.form--group {
+    font-size: 15px;
+}
+
+.form--group__year {
+    width: 40px;
+}
+
+.form--group__title {
+    font-size: 32px;
+}
+
+.form--group__author {
+    font-size: 19px;
+}
+
+.form--group__description {
+    width: 90%;
+    height: 400px;
+}
+
+.form--btn__delete {
+    color: $orange;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.form--submit__btn {
+    height: 40px;
+    width: 70%;
+    margin: 30px auto 0 auto;
+    outline: 1px solid;
+    outline-color: $blue;
+    @include flex(center, center);
+    transition: all 500ms ease;
+    margin-bottom: 100px;
+    &:hover {
+        background-color: $blue;
+        cursor: pointer;
+        outline: 7px solid;
+        outline-color: transparent;
+    }
+}
+
+.form--borrowed {
+    margin-top: 10px;
+    @include flex(center, center);
+    height: 30px;
+    width: 275px;
+    border: 2px solid $orange;
+    transition: all 300ms ease;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.form--borrowed__active {
+    background-color: $orange;
+}
+
+.form--loaned {
+    margin: 10px 0;
+    @include flex(center, center);
+    height: 30px;
+    width: 275px;
+    border: 2px solid $blue;
+    transition: all 300ms ease;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.form--loaned__active {
+    background-color: $blue;
+}
+
+.required {
+    box-shadow: 0 0 6px 0 red;
+}
+
+.required--symbol {
+    font-size: 20px;
+    color: red;
+    margin-left: 10px;
+}
+
+
+
+
+
+

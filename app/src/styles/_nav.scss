@@ -1,0 +1,44 @@
+.nav--container * {
+    font-family: Old Standard TT;
+    border-collapse: collapse;
+}
+
+.nav--btn {
+    color: black;
+    background-color: white;
+    padding: 5px 10px;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.nav--btn__active {
+    color: white;
+    background-color: $grey;
+}
+
+.nav--container {
+    height: 35px;
+    width: 100%;
+    display: flex;
+    border-bottom: 1px solid $grey;
+    // box-shadow: 0 0 2px 0 $grey;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: white;
+}
+
+.nav--container__left {
+    @include flex(center, flex-start);
+    padding-left: 30px;
+    height: 100%;
+    flex: 1;
+}
+
+.nav--container__right {
+    @include flex(center, flex-end);
+    padding-right: 30px;
+    height: 100%;
+    flex: 1;
+}
