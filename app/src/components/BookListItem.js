@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Radium from 'radium';
 import { browserHistory } from 'react-router';
+import ServerConfig from '../.././config/config.server';
 
 const helpers = require('../.././tools/helpers')();
 
@@ -18,7 +19,7 @@ class BookListItem extends Component {
     render() {
         const loadImage = () => {
             if (this.props.cover) {
-                const img = `http://localhost:3000/images/${this.props.cover}`;
+                const img = `${ServerConfig.local.hostname}${ServerConfig.local.port}/images/${this.props.cover}`;
                 return <img src={img} height="50px"/>;
             }
             return;
@@ -41,7 +42,7 @@ class BookListItem extends Component {
                     <td className="td--center">{loadImage()}</td>
                     <td>{helpers.capitalize(this.props.title)}</td>
                     <td>{helpers.capitalize(this.props.author[0].fullName)}</td>
-                    <td>{this.props.genre.join(', ')}</td>
+                    <td>{ this.props.genre.join(', ') }</td>
                     <td className={this.props.borrowed.from && 'td--check td--check__borrowed'}>{borrowed()}</td>
                     <td className={this.props.loaned.to && 'td--check td--check__loaned'}>{loaned()}</td>
                     <td className="td--center">{this.props.released}</td>

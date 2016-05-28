@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Request from 'superagent';
 import { browserHistory } from 'react-router';
 import EditBookView from './EditBookView';
+import ServerConfig from '../.././config/config.server';
 
 export default class EditBook extends Component {
     constructor(props) {
@@ -40,7 +41,7 @@ export default class EditBook extends Component {
 
     componentDidMount() {
         Request
-            .get(`http://localhost:8080/book/id/${this.props.params.id}`)
+            .get(`${ServerConfig.api.hostname}${ServerConfig.api.port}/book/id/${this.props.params.id}`)
             .end((err, res) => {
                 this.setState({ book: res.body });
 
@@ -55,7 +56,7 @@ export default class EditBook extends Component {
         e.preventDefault();
         if (this.isValid(this.state.book)) {
             Request
-                .post(`http://localhost:8080/book/id/${this.state.book._id}`)
+                .post(`${ServerConfig.api.hostname}${ServerConfig.api.port}/book/id/${this.state.book._id}`)
                 .send({book: this.state.book})
                 .end((err, res) => {
                     browserHistory.push(`/book/${this.state.book._id}`);
@@ -133,7 +134,9 @@ export default class EditBook extends Component {
     }
 
     addGenre(e) {
-        if (e.keyCode === 13) {
+        const ENTER_KEY = 13;
+        
+        if (e.keyCode === ENTER_KEY) {
             const book = this.state.book;
             book.genre.push(e.target.value);
             this.setState({book: book, genre: ''});
@@ -166,7 +169,7 @@ export default class EditBook extends Component {
         const formData = new FormData;
         formData.append('image', file);   
         Request
-            .post('http://localhost:8080/upload')
+            .post(`${ServerConfig.api.hostname}${ServerConfig.api.port}/upload`)
             .send(formData)
             .end((err, res) => {
                 const book = this.state.book;

@@ -11,9 +11,8 @@ const express = require('express'),
       booksCollection = require('./src/constants/constants.db').collections.BOOKS,
       multer = require('multer'),
       crypto = require('crypto'),
-      fs = require('fs');
-
-const books = require('./sampleData/books');
+      fs = require('fs'),
+      serverConfig = require('./src/config/config.server');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -45,7 +44,7 @@ app.use('/auth', authRouter);
 app.get('/', (req, res) => {
     const url = dbConfig.url;
     mongodb.connect(url, (err, db) => {
-        const collection = db.collection('books');
+        const collection = db.collection(booksCollection);
         collection.find({}).toArray((err, results) => {
             if (err) {
                 res.json(err);
@@ -86,8 +85,8 @@ app.post('/upload', upload.single('image'), function(req, res) {
 
 app.get('*', (req, res) => res.status(404).send('not found'));
 
-app.listen(8080, () => {
-    console.log('server running on port 8080');
+app.listen(serverConfig.port, () => {
+    console.log(`Server running on port ${serverConfig.port}`);
 });
 
 

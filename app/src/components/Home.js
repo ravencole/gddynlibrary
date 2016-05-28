@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import SignIn from './SignIn';
 import Request from 'superagent';
 import { browserHistory } from 'react-router';
+import ServerConfig from '../.././config/config.server';
 
 const auth = require('../auth')();
 
@@ -69,7 +70,7 @@ export default class Home extends Component {
     signIn() {
         if (this.loginIsValid()) {
             Request
-                .post('http://localhost:8080/auth/signin')
+                .post(`${ServerConfig.api.hostname}${ServerConfig.api.port}/auth/signin`)
                 .send({username: this.state.email, password: this.state.password})
                 .end((err, result) => {
                     if (result.body.auth) {

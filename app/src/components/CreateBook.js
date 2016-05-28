@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import Request from 'superagent';
 import ReactDOM from 'react-dom';
 import { browserHistory } from 'react-router';
+import CreateBookView from './CreateBookView';
+import ServerConfig from '../.././config/config.server';
 
 export default class NewBook extends Component {
     constructor(props) {
@@ -145,13 +147,12 @@ export default class NewBook extends Component {
         return true;
     }
 
-    submitImageData() {
+    submitImageData(image) {
         if (this.state.image) {
-            const image = ReactDOM.findDOMNode(this.refs.createimage).files[0];
             const formData = new FormData;
             formData.append('image', image);   
             Request
-                .post('http://localhost:8080/upload')
+                .post(`${ServerConfig.api.hostname}${ServerConfig.api.port}/upload`)
                 .send(formData)
                 .end((err, res) => {
                     const book = this.state.book;
@@ -167,7 +168,7 @@ export default class NewBook extends Component {
     submitFormData() {
         const book = this.state.book;
         Request
-            .post('http://localhost:8080/book/create')
+            .post(`${ServerConfig.api.hostname}${ServerConfig.api.port}/book/create`)
             .send({book: book})
             .end((err, res) => {
                 browserHistory.push(`/book/${res.body.ops[0]._id}`);
@@ -178,7 +179,7 @@ export default class NewBook extends Component {
         return str.split(',').map( genre => genre.trim());
     }
 
-    formatFormData() {
+    formatFormData(image) {
         const book = this.state.book;
         if (book.genre) {
             const genres = this.splitAndTrim(this.state.book.genre);
@@ -188,17 +189,16 @@ export default class NewBook extends Component {
         }
         
         this.setState({book: book});
-        
+        this.submitImageData(image);
     }
 
     redirectBookDetailsPage(id) {
         browserHistory.push(`/book/${id}`);
     }
 
-    onSubmit() {
+    onSubmit(image) {
         if (this.isValid()) {
-            this.formatFormData();
-            this.submitImageData();
+            this.formatFormData(image);
         }
     }
 
@@ -210,51 +210,23 @@ export default class NewBook extends Component {
         return (
             <div className="createBook--container__main">
                 { this.state.loggedIn ?
-                    <div className="createBook--container">
-                        <div>
-                            <label>Title:</label><input className={`${this.state.required.title && 'create--required'}`} onChange={this.onTitleChange} value={this.state.book.title} type="text" />
-                        </div>
-                        <hr />
-                        <div>
-                            <label>Author:</label><input className={`${this.state.required.author && 'create--required'}`} onChange={this.onAuthorChange} value={this.state.book.author[0].fullName} type="text" />
-                        </div>
-                        <hr />
-                        <div>
-                            <label>Publisher:</label><input className={`${this.state.required.publisher && 'create--required'}`} onChange={this.onPublisherChange} value={this.state.book.publisher} type="text" />
-                        </div>
-                        <hr />
-                        <div>
-                            <label>Release Year:</label><input className={`${this.state.required.released && 'create--required'}`} onChange={this.onReleasedChange} value={this.state.book.released} type="text" />
-                        </div>
-                        <hr />
-                        <div>
-                            <label>Genre: <span className="small--text">seperate with commas</span></label><input onChange={this.onGenreChange} value={this.state.book.genre} type="text" />
-                        </div>
-                        <hr />
-                        <div>
-                            <div>Borrowed:</div>
-                            <input type="checkbox" onChange={this.onBorrowedChange} value={this.state.book.borrowed.from} className="toggle toggle--borrowed" id="borrowed" />
-                            <label for="borrowed"></label>
-                        </div>
-                        <hr />
-                        <div>
-                            <div>Loaned:</div>
-                            <input type="checkbox" onChange={this.onLoanedChange} value={this.state.book.loaned.to} className="toggle toggle--loaned" id="loaned" />
-                            <label for="loaned"></label>
-                        </div>
-                        <hr />
-                        <div>
-                            <label>Cover:</label><input type="file" onChange={this.onChangeImage} name="createimage" ref="createimage"/>
-                        </div>
-                        <hr />
-                        <div>
-                            <label>Description:</label>
-                            <textarea onChange={this.onDescriptionChange} value={this.state.book.description} className="textarea"/>
-                        </div>
-                        <div onClick={this.onSubmit} className="createBook--btn">
-                            Submit
-                        </div>
-                    </div> :
+                    <CreateBookView
+                        required={this.state.required}
+                        book={this.state.book}
+                        image={this.state.image}
+                        loggedIn={this.state.loggedIn}
+                        onChangeImage={this.onChangeImage}
+                        onSubmit={this.onSubmit}
+                        onGenreChange={this.onGenreChange}
+                        onDescriptionChange={this.onDescriptionChange}
+                        onTitleChange={this.onTitleChange}
+                        onAuthorChange={this.onAuthorChange}
+                        onBorrowedChange={this.onBorrowedChange}
+                        onLoanedChange={this.onLoanedChange}
+                        onPublisherChange={this.onPublisherChange}
+                        onReleasedChange={this.onReleasedChange}
+                        submitImageData={this.submitImageData}
+                    /> :
                     <h1>You must be logged in to create new books.</h1>
                 }
             </div>

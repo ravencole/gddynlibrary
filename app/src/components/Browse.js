@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Request from 'superagent';
 import BookListItem from './BookListItem';
+import ServerConfig from '../.././config/config.server';
 
 const helpers = require('../../tools/helpers')();
 
@@ -32,7 +33,7 @@ export default class Browse extends Component {
 
     getByAuthor(author) {
         Request
-            .get(`http://localhost:8080/author/author/${author}`)
+            .get(`${ServerConfig.api.hostname}${ServerConfig.api.port}/author/author/${author}`)
             .end((err, res) => {
                 const books = res.body.sort((a, b) => {
                     if (a.title < b.title) return -1;
@@ -45,7 +46,7 @@ export default class Browse extends Component {
 
     getByGenre(genre) {
         Request
-            .get(`http://localhost:8080/book/genre/${genre}`)
+            .get(`${ServerConfig.api.hostname}${ServerConfig.api.port}/book/genre/${genre}`)
             .end((err, res) => {
                 const books = res.body.sort((a, b) => {
                     if (a.title < b.title) return -1;
@@ -58,7 +59,7 @@ export default class Browse extends Component {
 
     getIndex() {
         Request
-            .get('http://localhost:8080/book')
+            .get(`${ServerConfig.api.hostname}${ServerConfig.api.port}/book`)
             .end((err, res) => {
                 const books = res.body.sort((a, b) => {
                     if (a.title < b.title) return -1;

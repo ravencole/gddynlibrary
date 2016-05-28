@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import BookListItem from './BookListItem';
 import Request from 'superagent';
+import ServerConfig from '../.././config/config.server';
 
 const helpers = require('../../tools/helpers')();
 
@@ -24,6 +25,7 @@ export default class Search extends Component {
         this.onSearchKeyup = this.onSearchKeyup.bind(this);
         this.submitSearch = this.submitSearch.bind(this);
         this.onRadioClick = this.onRadioClick.bind(this);
+        this.resultsFoundInSearch = this.resultsFoundInSearch.bind(this);
     }
 
     alphabetizeTitle() {
@@ -83,14 +85,16 @@ export default class Search extends Component {
     }
 
     onSearchKeyup(e) {
-        if (e.keyCode === 13) {
+        const ENTER_KEY = 13;
+
+        if (e.keyCode === ENTER_KEY) {
             this.submitSearch();
         }
     }
 
     submitSearch() {
         Request
-            .get(`http://localhost:8080/book/search/${this.state.searchInput}/${this.state.searchType}`)
+            .get(`${ServerConfig.api.hostname}${ServerConfig.api.port}/book/search/${this.state.searchInput}/${this.state.searchType}`)
             .end((err, res) => {
                 if (res.body.length < 1) {
                     this.setState({searchInput: '', currentSearch: this.state.searchInput, books: res.body, noResultsFoundInSearch: true});
@@ -102,6 +106,10 @@ export default class Search extends Component {
 
     onRadioClick(e) {
         this.setState({searchType: e.target.value});
+    }
+
+    resultsFoundInSearch() {
+        return !this.state.noResultsFoundInSearch;
     }
 
     render() {
@@ -162,8 +170,8 @@ export default class Search extends Component {
                     <div className="radio--container">
                         {renderRadioButtons}
                     </div>
-                    {(this.state.currentSearch != '' && !this.state.noResultsFoundInSearch) && <h1>Search "{this.state.currentSearch}"</h1>}
-                    {(this.state.currentSearch != '' && this.state.noResultsFoundInSearch) && <h1>Your search for "{this.state.currentSearch}" did not return any results.</h1>}
+                    { (this.state.currentSearch != '' && this.resultsFoundInSearch()) && <h1>Search "{this.state.currentSearch}"</h1>}
+                    { (this.state.currentSearch != '' && !this.resultsFoundInSearch()) && <h1>Your search for "{this.state.currentSearch}" did not return any results.</h1>}
                 </div>
                 { this.state.books.length >= 1 && renderTable() }
             </div>
