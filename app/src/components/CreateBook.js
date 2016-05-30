@@ -149,13 +149,14 @@ export default class NewBook extends Component {
     }
 
     submitImageData(imageFile) {
-        const { image, book } = this.state;
+        const { image, book } = this.state,
+              { hostname, port } = ServerConfig.api;
 
         if (image) {
             const formData = new FormData;
             formData.append('image', imageFile);   
             Request
-                .post(`${ServerConfig.api.hostname}${ServerConfig.api.port}/upload`)
+                .post(`${hostname}${port}/upload`)
                 .send(formData)
                 .end((err, res) => {
                     book.cover = res.body;
@@ -168,10 +169,11 @@ export default class NewBook extends Component {
     }
 
     submitFormData() {
-        const { book } = this.state;
+        const { book } = this.state,
+              { hostname, port } = ServerConfig.api;
         
         Request
-            .post(`${ServerConfig.api.hostname}${ServerConfig.api.port}/book/create`)
+            .post(`${hostname}${port}/book/create`)
             .send({book})
             .end((err, res) => {
                 browserHistory.push(`/book/${res.body.ops[0]._id}`);

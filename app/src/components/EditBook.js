@@ -40,8 +40,10 @@ export default class EditBook extends Component {
     }
 
     componentDidMount() {
+        const { hostname, port } = ServerConfig.api;
+
         Request
-            .get(`${ServerConfig.api.hostname}${ServerConfig.api.port}/book/id/${this.props.params.id}`)
+            .get(`${hostname}${port}/book/id/${this.props.params.id}`)
             .end((err, res) => {
                 this.setState({ book: res.body });
 
@@ -55,11 +57,12 @@ export default class EditBook extends Component {
     onSubmit(e) {
         e.preventDefault();
 
-        const { book } = this.state;
+        const { book } = this.state,
+              { hostname, port } = ServerConfig.api;
 
         if (this.isValid(book)) {
             Request
-                .post(`${ServerConfig.api.hostname}${ServerConfig.api.port}/book/id/${book._id}`)
+                .post(`${hostname}${port}/book/id/${book._id}`)
                 .send({book: book})
                 .end((err, res) => {
                     browserHistory.push(`/book/${book._id}`);
@@ -99,31 +102,31 @@ export default class EditBook extends Component {
     onChangeTitle(e) {
         const book = this.state.book;
         book.title = e.target.value;
-        this.setState({'book': book});
+        this.setState({ book });
     }
 
     onChangeAuthor(e) {
         const book = this.state.book;
         book.author[0].fullName = e.target.value;
-        this.setState({'book': book});
+        this.setState({ book });
     }
 
     onChangePublisher(e) {
         const book = this.state.book;
         book.publisher = e.target.value;
-        this.setState({'book': book});
+        this.setState({ book });
     }
 
     onChangeYear(e) {
         const book = this.state.book;
         book.released = e.target.value;
-        this.setState({'book': book});
+        this.setState({ book });
     }
 
     onChangeDescription(e) {
         const book = this.state.book;
         book.description = e.target.value;
-        this.setState({'book': book});
+        this.setState({ book });
     }
 
     deleteGenre(e) {
@@ -142,7 +145,7 @@ export default class EditBook extends Component {
         if (e.keyCode === ENTER_KEY) {
             const book = this.state.book;
             book.genre.push(e.target.value);
-            this.setState({book: book, genre: ''});
+            this.setState({ book , genre: ''});
         }
     }
 
@@ -154,14 +157,14 @@ export default class EditBook extends Component {
         const book = this.state.book;
         book.loaned.to = !book.loaned.to;
 
-        this.setState({book: book});
+        this.setState({ book });
     }
 
     toggleBorrowed() {
         const book = this.state.book;
         book.borrowed.from = !book.borrowed.from;
 
-        this.setState({book: book});
+        this.setState({ book });
     }
 
     uploadImage() {
@@ -169,15 +172,17 @@ export default class EditBook extends Component {
     }
 
     onSubmitImage(file) {
-        const formData = new FormData;
+        const { hostname, port } = ServerConfig.api,
+              formData = new FormData;
+
         formData.append('image', file);   
         Request
-            .post(`${ServerConfig.api.hostname}${ServerConfig.api.port}/upload`)
+            .post(`${hostname}${port}/upload`)
             .send(formData)
             .end((err, res) => {
                 const book = this.state.book;
                 book.cover = res.body;
-                this.setState({book: book, uploadingFile: false});
+                this.setState({ book, uploadingFile: false});
             });
     }
 
