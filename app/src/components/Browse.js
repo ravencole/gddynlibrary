@@ -35,8 +35,10 @@ export default class Browse extends Component {
     }
 
     getByAuthor(author) {
+        const { hostname, port } = ServerConfig.api;
+
         Request
-            .get(`${ServerConfig.api.hostname}${ServerConfig.api.port}/author/author/${author}`)
+            .get(`${hostname}${port}/author/author/${author}`)
             .end((err, res) => {
                 const books = res.body.sort((a, b) => {
                     if (a.title < b.title) return -1;
@@ -48,8 +50,10 @@ export default class Browse extends Component {
     }
 
     getByGenre(genre) {
+        const { hostname, port } = ServerConfig.api;
+
         Request
-            .get(`${ServerConfig.api.hostname}${ServerConfig.api.port}/book/genre/${genre}`)
+            .get(`${hostname}${port}/book/genre/${genre}`)
             .end((err, res) => {
                 const books = res.body.sort((a, b) => {
                     if (a.title < b.title) return -1;
@@ -61,8 +65,10 @@ export default class Browse extends Component {
     }
 
     getIndex() {
+        const { hostname, port } = ServerConfig.api;
+
         Request
-            .get(`${ServerConfig.api.hostname}${ServerConfig.api.port}/book`)
+            .get(`${hostname}${port}/book`)
             .end((err, res) => {
                 const books = res.body.sort((a, b) => {
                     if (a.title < b.title) return -1;
