@@ -24,8 +24,10 @@ export default class EditBookView extends Component {
     }
 
     render() {
+        const { book, loggedIn, required, newCover, uploadingFile, genre } = this.props;
+
         const renderGenres = () => {
-            return this.props.book.genre.map( (genre, index) => {
+            return book.genre.map( (genre, index) => {
                 return (
                     <div key={`genre${index}`}>
                         {genre} 
@@ -56,23 +58,23 @@ export default class EditBookView extends Component {
                     <div className="left--container">
                         <div className="cover--container">
                             <div 
-                                className={`edit--image ${this.props.uploadingFile ? 'upload--active overlay--active' : 'upload--inactive overlay--inactive'}`} 
+                                className={`edit--image ${uploadingFile ? 'upload--active overlay--active' : 'upload--inactive overlay--inactive'}`} 
                             >
                                 <div onClick={this.props.uploadImage}>Change Book Cover</div>
-                                { this.props.uploadingFile && renderImageUploader()}
+                                { uploadingFile && renderImageUploader()}
                             </div>
-                            { this.props.book.cover && <img height="400px" src={`http://localhost:3000/images/${this.props.book.cover}`} />}
-                            { !this.props.book.cover && <div className="image--standin"></div> }
+                            { book.cover && <img height="400px" src={`http://localhost:3000/images/${book.cover}`} />}
+                            { !book.cover && <div className="image--standin"></div> }
                         </div>
                         <div 
-                            className={`form--borrowed ${this.props.book.borrowed.from && 'form--borrowed__active'}`} 
+                            className={`form--borrowed ${book.borrowed.from && 'form--borrowed__active'}`} 
                             onClick={this.props.toggleBorrowed}
                         >
                             Borrowed
                         </div>
 
                         <div 
-                            className={`form--loaned ${this.props.book.loaned.to && 'form--loaned__active'}`} 
+                            className={`form--loaned ${book.loaned.to && 'form--loaned__active'}`} 
                             onClick={this.props.toggleLoaned}
                         >
                             Loaned
@@ -81,7 +83,7 @@ export default class EditBookView extends Component {
                         {renderGenres()}
 
                         <input 
-                            value={this.props.genre} 
+                            value={genre} 
                             onChange={this.props.onChangeGenre} 
                             onKeyUp={this.props.addGenre} 
                             type="text" 
@@ -90,49 +92,49 @@ export default class EditBookView extends Component {
                     </div>
                     <form className="form--container">
                         <input 
-                            className={`form--group__title ${this.props.required.title && 'required'}`} 
+                            className={`form--group__title ${required.title && 'required'}`} 
                             type="text" 
                             onChange={this.props.onChangeTitle} 
-                            value={this.props.book.title} 
+                            value={book.title} 
                         />
                         <span className="required--symbol">
-                            {this.props.required.title && '*'}
+                            {required.title && '*'}
                         </span>
 
                         <br />
 
                         <span className="form--group__author">By </span>
                         <input 
-                            className={`form--group__author ${this.props.required.author && 'required'}`} 
+                            className={`form--group__author ${required.author && 'required'}`} 
                             type="text" 
                             onChange={this.props.onChangeAuthor} 
-                            value={this.props.book.author[0].fullName} 
+                            value={book.author[0].fullName} 
                         />
                         <span className="required--symbol">
-                            {this.props.required.author && '*'}
+                            {required.author && '*'}
                         </span>
 
                         <br />
                         
                         <span>Published By </span>
                         <input 
-                            className={`form--group ${this.props.required.publisher && 'required'}`} 
+                            className={`form--group ${required.publisher && 'required'}`} 
                             type="text" onChange={this.props.onChangePublisher} 
-                            value={this.props.book.publisher} 
+                            value={book.publisher} 
                         />
                         <span className="required--symbol">
-                            {this.props.required.publisher && '*'}
+                            {required.publisher && '*'}
                         </span>
                         <span>
                             { ' in ' }
                         </span>
                         <input 
-                            className={`form--group form--group__year ${this.props.required.released && 'required'}`} 
+                            className={`form--group form--group__year ${required.released && 'required'}`} 
                             type="text" onChange={this.props.onChangeYear} 
-                            value={this.props.book.released} 
+                            value={book.released} 
                         />
                         <span className="required--symbol">
-                            {this.props.required.released && '*'}
+                            {required.released && '*'}
                         </span>
 
                         <br />
@@ -140,7 +142,7 @@ export default class EditBookView extends Component {
                         <textarea 
                             className="form--group form--group__description" 
                             onChange={this.props.onChangeDescription} 
-                            value={this.props.book.description} 
+                            value={book.description} 
                         />
                     </form>
                 </div>

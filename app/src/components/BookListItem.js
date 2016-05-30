@@ -17,35 +17,39 @@ class BookListItem extends Component {
     }
 
     render() {
+        const { cover, borrowed, loaned, title, _id, author, genre, released } = this.props;
+
         const loadImage = () => {
-            if (this.props.cover) {
-                const img = `${ServerConfig.local.hostname}${ServerConfig.local.port}/images/${this.props.cover}`;
+            const { hostname, port } = ServerConfig.local;
+
+            if (cover) {
+                const img = `${hostname}${port}/images/${cover}`;
                 return <img src={img} height="50px"/>;
             }
             return;
         };
 
-        const borrowed = () => {
-            if (this.props.borrowed.from) {
+        const borrowedItem = () => {
+            if (borrowed.from) {
                 return <div>&#10003;</div>;
             }
         };
 
-        const loaned = () => {
-            if (this.props.loaned.to) {
+        const loanedItem = () => {
+            if (loaned.to) {
                 return <div>&#10003;</div>;
             }
         };
 
         return ( 
-                <tr onClick={this.redirectToBookDetails} key={`${this.props.title}_${this.props._id}_browsetable`}>
+                <tr onClick={this.redirectToBookDetails} key={`${title}_${_id}_browsetable`}>
                     <td className="td--center">{loadImage()}</td>
-                    <td>{helpers.capitalize(this.props.title)}</td>
-                    <td>{helpers.capitalize(this.props.author[0].fullName)}</td>
-                    <td>{ this.props.genre.join(', ') }</td>
-                    <td className={this.props.borrowed.from && 'td--check td--check__borrowed'}>{borrowed()}</td>
-                    <td className={this.props.loaned.to && 'td--check td--check__loaned'}>{loaned()}</td>
-                    <td className="td--center">{this.props.released}</td>
+                    <td>{helpers.capitalize(title)}</td>
+                    <td>{helpers.capitalize(author[0].fullName)}</td>
+                    <td>{ genre.join(', ') }</td>
+                    <td className={borrowed.from && 'td--check td--check__borrowed'}>{borrowedItem()}</td>
+                    <td className={loaned.to && 'td--check td--check__loaned'}>{loanedItem()}</td>
+                    <td className="td--center">{released}</td>
                 </tr>
         );
     }

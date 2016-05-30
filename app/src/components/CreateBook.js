@@ -123,13 +123,14 @@ export default class NewBook extends Component {
     }
 
     isValid() {
-        const required = this.state.required;
+        const { book, required } = this.state;
+
         let failed = false;
         for (const prop in required) {
-            if (this.state.book[prop] == '') {
+            if (book[prop] == '') {
                 required[prop] = true;
                 failed = true;
-            } else if (this.state.book.author[0].fullName == '') {
+            } else if (book.author[0].fullName == '') {
                 required.author = true;
                 failed = true;
             } else {
@@ -139,25 +140,26 @@ export default class NewBook extends Component {
         
         if (failed) {
             required.failed = true;
-            this.setState({required: required});
+            this.setState({required});
             return false;
         }
         required.failed = false;
-        this.setState({required: required});
+        this.setState({required});
         return true;
     }
 
-    submitImageData(image) {
-        if (this.state.image) {
+    submitImageData(imageFile) {
+        const { image, book } = this.state;
+
+        if (image) {
             const formData = new FormData;
-            formData.append('image', image);   
+            formData.append('image', imageFile);   
             Request
                 .post(`${ServerConfig.api.hostname}${ServerConfig.api.port}/upload`)
                 .send(formData)
                 .end((err, res) => {
-                    const book = this.state.book;
                     book.cover = res.body;
-                    this.setState({book: book});
+                    this.setState({ book });
                     this.submitFormData();
                 });
         } else {
@@ -166,10 +168,11 @@ export default class NewBook extends Component {
     }
 
     submitFormData() {
-        const book = this.state.book;
+        const { book } = this.state;
+        
         Request
             .post(`${ServerConfig.api.hostname}${ServerConfig.api.port}/book/create`)
-            .send({book: book})
+            .send({book})
             .end((err, res) => {
                 browserHistory.push(`/book/${res.body.ops[0]._id}`);
             });
@@ -180,7 +183,8 @@ export default class NewBook extends Component {
     }
 
     formatFormData(image) {
-        const book = this.state.book;
+        const { book } = this.state;
+
         if (book.genre) {
             const genres = this.splitAndTrim(this.state.book.genre);
             book.genre = genres;
@@ -188,7 +192,7 @@ export default class NewBook extends Component {
             book.genre = [];
         }
         
-        this.setState({book: book});
+        this.setState({ book });
         this.submitImageData(image);
     }
 
@@ -207,14 +211,16 @@ export default class NewBook extends Component {
     }
 
     render() {
+        const { loggedIn, required, book, image } = this.state;
+
         return (
             <div className="createBook--container__main">
-                { this.state.loggedIn ?
+                { loggedIn ?
                     <CreateBookView
-                        required={this.state.required}
-                        book={this.state.book}
-                        image={this.state.image}
-                        loggedIn={this.state.loggedIn}
+                        required={required}
+                        book={book}
+                        image={image}
+                        loggedIn={loggedIn}
                         onChangeImage={this.onChangeImage}
                         onSubmit={this.onSubmit}
                         onGenreChange={this.onGenreChange}

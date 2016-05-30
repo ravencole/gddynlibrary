@@ -28,12 +28,18 @@ export default class Search extends Component {
         this.resultsFoundInSearch = this.resultsFoundInSearch.bind(this);
     }
 
+    componentWillMount() {
+        
+    }
+
     alphabetizeTitle() {
-        if (this.state.sortedBy === 'title') {
-            const resort = this.state.books.reverse();
+        const { sortedBy, books } = this.state;
+
+        if (sortedBy === 'title') {
+            const resort = books.reverse();
             this.setState({books: resort});
         } else {
-            const resort = this.state.books.sort((a, b) => {
+            const resort = books.sort((a, b) => {
                 if (helpers.capitalize(a.title) < helpers.capitalize(b.title)) return -1;
                 if (helpers.capitalize(a.title) > helpers.capitalize(b.title)) return 1;
                 return 0;
@@ -43,6 +49,8 @@ export default class Search extends Component {
     }
 
     alphabetizeByAuthor() {
+        const { sortedBy, books } = this.state;
+
         const getLastName = (name) => {
             const capName = name.split(' ').map( word => {
                 return word.charAt(0).toUpperCase() + word.substring(1, word.length);
@@ -50,11 +58,11 @@ export default class Search extends Component {
             return capName[capName.length - 1];
         }
 
-        if (this.state.sortedBy === 'author') {
-            const resort = this.state.books.reverse();
+        if (sortedBy === 'author') {
+            const resort = books.reverse();
             this.setState({books: resort});
         } else {
-            const resort = this.state.books.sort((a, b) => {
+            const resort = books.sort((a, b) => {
                 const prevAuthorLastName = getLastName(a.author[0].fullName),
                       currAuthorLastName = getLastName(b.author[0].fullName);
 
@@ -67,11 +75,13 @@ export default class Search extends Component {
     }
 
     sortByReleaseDate() {
-        if (this.state.sortedBy === 'year') {
-            const resort = this.state.books.reverse();
+        const { sortedBy, books } = this.state;
+
+        if (sortedBy === 'year') {
+            const resort = books.reverse();
             this.setState({books: resort});
         } else {
-            const resort = this.state.books.sort((a, b) => {
+            const resort = books.sort((a, b) => {
                 if (a.released < b.released) return -1;
                 if (a.released > b.released) return 1;
                 return 0;
@@ -93,13 +103,16 @@ export default class Search extends Component {
     }
 
     submitSearch() {
+        const { hostname, port } = ServerConfig.api,
+              { searchInput, searchType } = this.state;
+
         Request
-            .get(`${ServerConfig.api.hostname}${ServerConfig.api.port}/book/search/${this.state.searchInput}/${this.state.searchType}`)
+            .get(`${hostname}${port}/book/search/${searchInput}/${searchType}`)
             .end((err, res) => {
                 if (res.body.length < 1) {
-                    this.setState({searchInput: '', currentSearch: this.state.searchInput, books: res.body, noResultsFoundInSearch: true});
+                    this.setState({searchInput: '', currentSearch: searchInput, books: res.body, noResultsFoundInSearch: true});
                 } else {
-                    this.setState({searchInput: '', currentSearch: this.state.searchInput, books: res.body, noResultsFoundInSearch: false});
+                    this.setState({searchInput: '', currentSearch: searchInput, books: res.body, noResultsFoundInSearch: false});
                 }
             });
     }
@@ -113,7 +126,9 @@ export default class Search extends Component {
     }
 
     render() {
-        const renderBooks = this.state.books.map((book, index) => {
+        const { books, searchType, searchInput, currentSearch } = this.state;
+
+        const renderBooks = books.map((book, index) => {
             return <BookListItem key={`booklistitem${index}`} {...book} />;
         });
 
@@ -144,7 +159,7 @@ export default class Search extends Component {
         const renderRadioButtons = buttons.map(button => {
             return (
                 <div
-                    className={this.state.searchType == button ? 'radio radio--checked' : 'radio radio--unchecked'}
+                    className={searchType == button ? 'radio radio--checked' : 'radio radio--unchecked'}
                     onClick={this.onRadioClick}
                     value={button}
                 >
@@ -160,7 +175,7 @@ export default class Search extends Component {
                         <input 
                             className="search--input" 
                             type="text" 
-                            value={this.state.searchInput} 
+                            value={searchInput} 
                             onChange={this.onSearchChange} 
                             onKeyUp={this.onSearchKeyup} 
                             placeholder="Search"
@@ -170,10 +185,10 @@ export default class Search extends Component {
                     <div className="radio--container">
                         {renderRadioButtons}
                     </div>
-                    { (this.state.currentSearch != '' && this.resultsFoundInSearch()) && <h1>Search "{this.state.currentSearch}"</h1>}
-                    { (this.state.currentSearch != '' && !this.resultsFoundInSearch()) && <h1>Your search for "{this.state.currentSearch}" did not return any results.</h1>}
+                    { (currentSearch != '' && this.resultsFoundInSearch()) && <h1>Search "{currentSearch}"</h1>}
+                    { (currentSearch != '' && !this.resultsFoundInSearch()) && <h1>Your search for "{currentSearch}" did not return any results.</h1>}
                 </div>
-                { this.state.books.length >= 1 && renderTable() }
+                { books.length >= 1 && renderTable() }
             </div>
         );
     }

@@ -38,7 +38,8 @@ export default class Home extends Component {
     }
 
     loginIsValid() {
-        const required = this.state.required;
+        const { required } = this.state;
+
         required.failed = true;
         if (this.state.email == '') {
             required.email = true;
@@ -49,7 +50,7 @@ export default class Home extends Component {
             required.failed = false;
         }
 
-        this.setState({required: required});
+        this.setState({ required });
         return required.failed;
     }
     
@@ -68,20 +69,22 @@ export default class Home extends Component {
     }
 
     signIn() {
+        const { password, required, email } = this.state,
+              { hostname, port } = ServerConfig.api;
+
         if (this.loginIsValid()) {
             Request
-                .post(`${ServerConfig.api.hostname}${ServerConfig.api.port}/auth/signin`)
-                .send({username: this.state.email, password: this.state.password})
+                .post(`${hostname}${port}/auth/signin`)
+                .send({username: email, password: password})
                 .end((err, result) => {
                     if (result.body.auth) {
                         this.setState({loggedIn: true, signingIn: false, email: '', password: ''});
                         localStorage.token = result.body.token;
                         browserHistory.push('/browse');
                     } else {
-                        const required = this.state.required;
                         required.password = true;
                         required.failed = true;
-                        this.setState({password: '', required: required});
+                        this.setState({password: '', required });
                     }
                 })
         }
@@ -92,18 +95,22 @@ export default class Home extends Component {
     }
 
     cancelLogIn() {
-        const required = this.state.required;
-        required.email = false;
-        required.password = false;
-        required.failed = false;
-        this.setState({signingIn: false, password: '', email: '', required: required });
+        const required = {
+            email: false,
+            password: false,
+            failed: false
+        }
+
+        this.setState({signingIn: false, password: '', email: '', required });
         browserHistory.push('/browse');
     }
 
     render() {
+        const { loggedIn, required, email, password, signingIn } = this.state;
+
         return (
             <div>
-                <NavBar logout={this.logout} attemptSignIn={this.attemptSignIn} loggedIn={this.state.loggedIn} />
+                <NavBar logout={this.logout} attemptSignIn={this.attemptSignIn} loggedIn={loggedIn} />
                 <div className="subnav--container">
                     <Link to="/browse" activeClassName="nav--btn__active" className="subnav--item">Catalog</Link>
                     <Link to="/search" activeClassName="nav--btn__active" className="subnav--item">Search</Link>
@@ -111,12 +118,12 @@ export default class Home extends Component {
                 </div>
                 <div className="home--children__container">
                     {
-                        this.state.signingIn ?
+                        signingIn ?
                         <SignIn 
-                            loggedIn={this.state.loggedIn}
-                            required={this.state.required}
-                            email={this.state.email} 
-                            password={this.state.password} 
+                            loggedIn={loggedIn}
+                            required={required}
+                            email={email} 
+                            password={password} 
                             signIn={this.signIn} 
                             onEmailChange={this.onEmailChange}
                             onPasswordChange={this.onPasswordChange}

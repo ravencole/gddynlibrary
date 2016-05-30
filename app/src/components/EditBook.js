@@ -54,12 +54,15 @@ export default class EditBook extends Component {
 
     onSubmit(e) {
         e.preventDefault();
-        if (this.isValid(this.state.book)) {
+
+        const { book } = this.state;
+
+        if (this.isValid(book)) {
             Request
-                .post(`${ServerConfig.api.hostname}${ServerConfig.api.port}/book/id/${this.state.book._id}`)
-                .send({book: this.state.book})
+                .post(`${ServerConfig.api.hostname}${ServerConfig.api.port}/book/id/${book._id}`)
+                .send({book: book})
                 .end((err, res) => {
-                    browserHistory.push(`/book/${this.state.book._id}`);
+                    browserHistory.push(`/book/${book._id}`);
                 });
         }
     }
@@ -89,7 +92,7 @@ export default class EditBook extends Component {
             return true;
         }
 
-        this.setState({required: required});
+        this.setState({ required });
         return false;
     }
 
@@ -179,15 +182,17 @@ export default class EditBook extends Component {
     }
 
     render() {
+        const { book, loggedIn, required, newCover, uploadingFile, genre } = this.state;
+
         return (
             <div>
-                {(this.state.book.title && this.state.loggedIn) ?
+                {(book.title && loggedIn) ?
                     <EditBookView 
-                            book={this.state.book}
-                            genre={this.state.genre}
-                            newCover={this.state.newCover}
-                            uploadingFile={this.state.uploadingFile}
-                            required={this.state.required}
+                            book={book}
+                            genre={genre}
+                            newCover={newCover}
+                            uploadingFile={uploadingFile}
+                            required={required}
                             toggleBorrowed={this.toggleBorrowed}
                             toggleLoaned={this.toggleLoaned}
                             onChangeGenre={this.onChangeGenre}

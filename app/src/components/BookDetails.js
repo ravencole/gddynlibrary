@@ -59,13 +59,15 @@ export default class BookDetails extends Component {
     }
 
     render() {
+        const { book, loggedIn, removeModal } = this.state;
+        
         return (
             <div>
-                { this.state.book.title && 
+                { book.title && 
                     <BookDetailsView
-                        removeModal={this.state.removeModal}
-                        book={this.state.book}
-                        loggedIn={this.state.loggedIn}
+                        removeModal={removeModal}
+                        book={book}
+                        loggedIn={loggedIn}
                         removeBook={this.removeBook}
                         cancelRemoveBook={this.cancelRemoveBook}
                         removeBookConfirm={this.removeBookConfirm}

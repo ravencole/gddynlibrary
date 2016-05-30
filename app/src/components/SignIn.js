@@ -16,6 +16,8 @@ export default class SignIn extends Component {
     }
 
     render() {
+        const { required, email, password } = this.props;
+
         return (
             <div className="sigin--container__main">
                 <div className="signin--container__inner">
@@ -23,18 +25,18 @@ export default class SignIn extends Component {
                     <div className="signin--input__container">
                         <div>Email:</div>
                         <input 
-                            className={this.props.required.email ? 'required--signin' : ''} 
+                            className={required.email ? 'required--signin' : ''} 
                             type="text" 
-                            value={this.props.email}
+                            value={email}
                             onChange={this.props.onEmailChange}
                         />
                     </div>
                     <div className="signin--input__container">
                         <div>Password:</div>
                         <input 
-                            className={this.props.required.password ? 'required--signin' : ''} 
+                            className={required.password ? 'required--signin' : ''} 
                             type="password" 
-                            value={this.props.password}
+                            value={password}
                             onChange={this.props.onPasswordChange}
                         />
                     </div>

@@ -22,13 +22,16 @@ export default class Browse extends Component {
     }
 
     componentDidMount() {
-        if (this.props.params.genre) {
-            this.getByGenre(this.props.params.genre);
-        } else if (this.props.params.author) {
-            this.getByAuthor(this.props.params.author);
+        const { author, genre } = this.props.params;
+
+        if (genre) {
+            this.getByGenre(genre);
+        } else if (author) {
+            this.getByAuthor(author);
         } else {
             this.getIndex();
         }
+
     }
 
     getByAuthor(author) {
@@ -40,7 +43,7 @@ export default class Browse extends Component {
                     if (a.title > b.title) return 1;
                     return 0;
                 });
-                this.setState({ books: books });
+                this.setState({ books });
             });
     }
 
@@ -53,7 +56,7 @@ export default class Browse extends Component {
                     if (a.title > b.title) return 1;
                     return 0;
                 });
-                this.setState({ books: books });
+                this.setState({ books });
             });
     }
 
@@ -66,16 +69,18 @@ export default class Browse extends Component {
                     if (a.title > b.title) return 1;
                     return 0;
                 });
-                this.setState({ books: books });
+                this.setState({ books });
             });
     }
 
     alphabetizeTitle() {
-        if (this.state.sortedBy === 'title') {
-            const resort = this.state.books.reverse();
+        const { books, sortedBy } = this.state;
+
+        if (sortedBy === 'title') {
+            const resort = books.reverse();
             this.setState({books: resort});
         } else {
-            const resort = this.state.books.sort((a, b) => {
+            const resort = books.sort((a, b) => {
                 if (helpers.capitalize(a.title) < helpers.capitalize(b.title)) return -1;
                 if (helpers.capitalize(a.title) > helpers.capitalize(b.title)) return 1;
                 return 0;
@@ -85,6 +90,8 @@ export default class Browse extends Component {
     }
 
     alphabetizeByAuthor() {
+        const { books, sortedBy } = this.state;
+
         const getLastName = (name) => {
             const capName = name.split(' ').map( word => {
                 return word.charAt(0).toUpperCase() + word.substring(1, word.length);
@@ -92,11 +99,11 @@ export default class Browse extends Component {
             return capName[capName.length - 1];
         }
 
-        if (this.state.sortedBy === 'author') {
-            const resort = this.state.books.reverse();
+        if (sortedBy === 'author') {
+            const resort = books.reverse();
             this.setState({books: resort});
         } else {
-            const resort = this.state.books.sort((a, b) => {
+            const resort = books.sort((a, b) => {
                 const prevAuthorLastName = getLastName(a.author[0].fullName),
                       currAuthorLastName = getLastName(b.author[0].fullName);
 
@@ -109,11 +116,13 @@ export default class Browse extends Component {
     }
 
     sortByReleaseDate() {
-        if (this.state.sortedBy === 'year') {
-            const resort = this.state.books.reverse();
+        const { books, sortedBy } = this.state;
+
+        if (sortedBy === 'year') {
+            const resort = books.reverse();
             this.setState({books: resort});
         } else {
-            const resort = this.state.books.sort((a, b) => {
+            const resort = books.sort((a, b) => {
                 if (a.released < b.released) return -1;
                 if (a.released > b.released) return 1;
                 return 0;
@@ -123,7 +132,9 @@ export default class Browse extends Component {
     }
 
     render() {
-        const renderBooks = this.state.books.map((book, index) => {
+        const { books } = this.state;
+
+        const renderBooks = books.map((book, index) => {
             return <BookListItem {...book} />;
         });
 
