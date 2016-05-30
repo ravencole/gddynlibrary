@@ -15,7 +15,7 @@ const authorController = () => {
     };
 
     return {
-        getByAuthorName: getByAuthorName
+        getByAuthorName
     }
 
 }

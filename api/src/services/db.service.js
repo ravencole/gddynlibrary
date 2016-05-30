@@ -1,6 +1,6 @@
 const mongodb = require('mongodb').MongoClient,
       objectId = require('mongodb').ObjectId,
-      dbUrl = require('../config/config.db.js').url;
+      dbUrl = require('../config/config.db.js').url,
       dbCollections = require('../constants/constants.db'),
       regExTools = require('../.././tools/regex.tools')();
 

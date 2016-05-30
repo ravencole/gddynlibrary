@@ -9,8 +9,8 @@ const regExTools = () => {
     }
 
     return {
-        caseInsensitive: caseInsensitive,
-        partialCaseInsensitive: partialCaseInsensitive
+        caseInsensitive,
+        partialCaseInsensitive
     };
 };
 

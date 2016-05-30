@@ -3,42 +3,55 @@ const express = require('express'),
 
 const router = () => {
     const bookController = require('../controllers/bookController')();
+    const { 
+        getIndex, 
+        getById, 
+        getByTitle, 
+        getByPublisher, getByYear,
+        getByGenre,
+        getByBorrowed,
+        getByLoaned,
+        updateById,
+        createBook,
+        deleteBookById,
+        search
+    } = bookController;
 
     bookRouter.route('/')
-        .get(bookController.getIndex);
+        .get(getIndex);
 
     bookRouter.route('/id/:id')
-        .get(bookController.getById);
+        .get(getById);
 
     bookRouter.route('/title/:title')
-        .get(bookController.getByTitle);
+        .get(getByTitle);
 
     bookRouter.route('/publisher/:name')
-        .get(bookController.getByPublisher);
+        .get(getByPublisher);
 
     bookRouter.route('/year/:year1/:year2?')
-        .get(bookController.getByYear);
+        .get(getByYear);
 
     bookRouter.route('/genre/:genre')
-        .get(bookController.getByGenre);
+        .get(getByGenre);
 
     bookRouter.route('/borrowed')
-        .get(bookController.getByBorrowed);
+        .get(getByBorrowed);
 
     bookRouter.route('/loaned')
-        .get(bookController.getByLoaned);
+        .get(getByLoaned);
 
     bookRouter.route('/id/:id')
-        .post(bookController.updateById);
+        .post(updateById);
 
     bookRouter.route('/create')
-        .post(bookController.createBook);
+        .post(createBook);
 
     bookRouter.route('/remove/:id')
-        .get(bookController.deleteBookById);
+        .get(deleteBookById);
 
     bookRouter.route('/search/:query/:searchType')
-        .get(bookController.search);
+        .get(search);
 
     return bookRouter;
 };

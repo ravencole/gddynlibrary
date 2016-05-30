@@ -61,7 +61,7 @@ const bookController = () => {
     const getByGenre = (req, res) => {
         const genre = regExTools.caseInsensitive(req.params.genre);
 
-        dbService.find({genre: genre}, res, (err, results) => {
+        dbService.find({genre}, res, (err, results) => {
             if (err) {
                 res.json(err);
             } else {
@@ -93,7 +93,7 @@ const bookController = () => {
     const getByTitle = (req, res) => {
         const title = regExTools.caseInsensitive(req.params.title);
 
-        dbService.find({title: title}, res, (err, results) => {
+        dbService.find({title}, res, (err, results) => {
             if (err) {
                 res.json(err);
             } else {
@@ -163,18 +163,18 @@ const bookController = () => {
     }
 
     return {
-        getIndex: getIndex,
-        getById: getById,
-        getByPublisher: getByPublisher,
-        getByYear: getByYear,
-        getByGenre: getByGenre,
-        getByBorrowed: getByBorrowed,
-        getByLoaned: getByLoaned,
-        getByTitle: getByTitle,
-        updateById: updateById,
-        createBook: createBook,
-        deleteBookById: deleteBookById,
-        search: search
+        getIndex,
+        getById,
+        getByPublisher,
+        getByYear,
+        getByGenre,
+        getByBorrowed,
+        getByLoaned,
+        getByTitle,
+        updateById,
+        createBook,
+        deleteBookById,
+        search
     };
 };
 

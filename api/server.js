@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 const urlencodedParser = bodyParser.urlencoded({limit: '5.00mb', extended: true}); 
 app.use(cors());
@@ -56,15 +56,17 @@ app.get('/', (req, res) => {
     });
 });
 
-app.get('/seeddb', (req, res) => {
-    mongodb.connect(dbUrl, (err, db) => {
-        const collection = db.collection(booksCollection);
-        collection.insertMany(books, (err, results) => {
-            res.json({got: 'it'});
-            db.close();
-        });
-    });
-});
+
+/* FOR DEV ONLY */
+// app.get('/seeddb', (req, res) => {
+//     mongodb.connect(dbUrl, (err, db) => {
+//         const collection = db.collection(booksCollection);
+//         collection.insertMany(books, (err, results) => {
+//             res.json({got: 'it'});
+//             db.close();
+//         });
+//     });
+// });
 
 
 app.post('/upload', upload.single('image'), function(req, res) {
