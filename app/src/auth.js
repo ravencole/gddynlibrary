@@ -23,9 +23,9 @@ const auth = () => {
     }
 
     return {
-        loggedIn: loggedIn,
-        login: login,
-        logout: logout
+        loggedIn,
+        login,
+        logout
     }
 
 }

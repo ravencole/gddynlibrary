@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Request from 'superagent';
 import { browserHistory } from 'react-router';
 import EditBookView from './EditBookView';
-import ServerConfig from '../.././config/config.server';
+import ServerConfig from '../../.././config/config.server';
 
 export default class EditBook extends Component {
     constructor(props) {
@@ -23,19 +23,19 @@ export default class EditBook extends Component {
             loggedIn: false
         }
 
-        this.onSubmit = this.onSubmit.bind(this);
-        this.onChangeTitle = this.onChangeTitle.bind(this);
-        this.onChangeAuthor = this.onChangeAuthor.bind(this);
-        this.onChangePublisher = this.onChangePublisher.bind(this);
-        this.onChangeYear = this.onChangeYear.bind(this);
-        this.addGenre = this.addGenre.bind(this);
-        this.onChangeGenre = this.onChangeGenre.bind(this);
-        this.deleteGenre = this.deleteGenre.bind(this);
-        this.toggleLoaned = this.toggleLoaned.bind(this);
-        this.toggleBorrowed = this.toggleBorrowed.bind(this);
-        this.isValid = this.isValid.bind(this);
-        this.uploadImage = this.uploadImage.bind(this);
-        this.onSubmitImage = this.onSubmitImage.bind(this);
+        this.onSubmit            = this.onSubmit.bind(this);
+        this.onChangeTitle       = this.onChangeTitle.bind(this);
+        this.onChangeAuthor      = this.onChangeAuthor.bind(this);
+        this.onChangePublisher   = this.onChangePublisher.bind(this);
+        this.onChangeYear        = this.onChangeYear.bind(this);
+        this.addGenre            = this.addGenre.bind(this);
+        this.onChangeGenre       = this.onChangeGenre.bind(this);
+        this.deleteGenre         = this.deleteGenre.bind(this);
+        this.toggleLoaned        = this.toggleLoaned.bind(this);
+        this.toggleBorrowed      = this.toggleBorrowed.bind(this);
+        this.isValid             = this.isValid.bind(this);
+        this.uploadImage         = this.uploadImage.bind(this);
+        this.onSubmitImage       = this.onSubmitImage.bind(this);
         this.onChangeDescription = this.onChangeDescription.bind(this);
     }
 
@@ -193,26 +193,28 @@ export default class EditBook extends Component {
             <div>
                 {(book.title && loggedIn) ?
                     <EditBookView 
-                            book={book}
-                            genre={genre}
-                            newCover={newCover}
-                            uploadingFile={uploadingFile}
-                            required={required}
-                            toggleBorrowed={this.toggleBorrowed}
-                            toggleLoaned={this.toggleLoaned}
-                            onChangeGenre={this.onChangeGenre}
-                            addGenre={this.addGenre}
-                            deleteGenre={this.deleteGenre}
-                            onChangeDescription={this.onChangeDescription}
-                            onChangeYear={this.onChangeYear}
-                            onChangePublisher={this.onChangePublisher}
-                            onChangeAuthor={this.onChangeAuthor}
-                            onChangeTitle={this.onChangeTitle}
-                            onSubmit={this.onSubmit}
-                            onSubmitImage={this.onSubmitImage}
-                            uploadImage={this.uploadImage}
-                        /> 
-                        : <div style={{position: 'fixed', top: '50%', left: '50%', transform: 'translateX(-50%)'}}>You must be logged in to edit the books.</div>
+                        book={book}
+                        genre={genre}
+                        newCover={newCover}
+                        uploadingFile={uploadingFile}
+                        required={required}
+                        toggleBorrowed={this.toggleBorrowed}
+                        toggleLoaned={this.toggleLoaned}
+                        onChangeGenre={this.onChangeGenre}
+                        addGenre={this.addGenre}
+                        deleteGenre={this.deleteGenre}
+                        onChangeDescription={this.onChangeDescription}
+                        onChangeYear={this.onChangeYear}
+                        onChangePublisher={this.onChangePublisher}
+                        onChangeAuthor={this.onChangeAuthor}
+                        onChangeTitle={this.onChangeTitle}
+                        onSubmit={this.onSubmit}
+                        onSubmitImage={this.onSubmitImage}
+                        uploadImage={this.uploadImage}
+                    /> 
+                    : <div style={{position: 'fixed', top: '50%', left: '50%', transform: 'translateX(-50%)'}}>
+                        You must be logged in to edit the books.
+                      </div>
                 }
             </div>
         );

@@ -2,10 +2,11 @@ const express = require('express'),
       authorRouter = express.Router();
 
 const router = () => {
-    const authorController = require('../controllers/authorController')();
+    const authorController = require('../controllers/authorController')(),
+          { getByAuthorName } = authorController;
 
     authorRouter.route('/author/:name')
-        .get(authorController.getByAuthorName);
+        .get(getByAuthorName);
 
     return authorRouter;
 }

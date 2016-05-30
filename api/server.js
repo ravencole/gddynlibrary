@@ -1,5 +1,6 @@
 'use strict';
 
+/* DEPENDENCIES */
 const express = require('express'),
       app = express(),
       mongodb = require('mongodb').MongoClient,
@@ -14,6 +15,12 @@ const express = require('express'),
       fs = require('fs'),
       serverConfig = require('./src/config/config.server');
 
+const bookRouter = require('./src/routes/bookRoutes')(),
+      authorRouter = require('./src/routes/authorRoutes')(),
+      authRouter = require('./src/routes/authRoutes')();
+
+/* MULTER SETUP FOR FILE DOWNLOADS */
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, '.././app/resources/images/');
@@ -27,19 +34,21 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+/* MIDDLEWARE */
+
 const urlencodedParser = bodyParser.urlencoded({limit: '5.00mb', extended: true}); 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(urlencodedParser);
 app.use(cookieParser());
 
-const bookRouter = require('./src/routes/bookRoutes')();
-const authorRouter = require('./src/routes/authorRoutes')();
-const authRouter = require('./src/routes/authRoutes')();
+/* MAIN ROUTES */
 
 app.use('/book', bookRouter);
 app.use('/author', authorRouter);
 app.use('/auth', authRouter);
+
+/* INDEX ROUTE */
 
 app.get('/', (req, res) => {
     const url = dbConfig.url;
@@ -68,6 +77,7 @@ app.get('/', (req, res) => {
 //     });
 // });
 
+/* ROUTE FOR UPLOADING IMAGES */
 
 app.post('/upload', upload.single('image'), function(req, res) {
   const filename = req.file.filename;
@@ -85,7 +95,11 @@ app.post('/upload', upload.single('image'), function(req, res) {
   fileExists(res, filename);
 });
 
+/* CATCH ALL OTHER ROUTES AND RETURN A 404 */
+
 app.get('*', (req, res) => res.status(404).send('not found'));
+
+/* RUN THE SERVER */
 
 app.listen(serverConfig.port, () => {
     console.log(`Server running on port ${serverConfig.port}`);

@@ -6,7 +6,7 @@ const authController = () => {
     const signin = (req, res) => {
         const { username, password } = req.body;
          
-        dbService.signin({ username,  password}, res, (err, results) => {
+        dbService.signin({ username,  password }, res, (err, results) => {
             if (results.length < 1) {
                 res.json({auth: false});
             } else {

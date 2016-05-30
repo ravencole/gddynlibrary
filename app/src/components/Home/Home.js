@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import NavBar from './NavBar';
-import { Link } from 'react-router';
-import SignIn from './SignIn';
 import Request from 'superagent';
 import { browserHistory } from 'react-router';
-import ServerConfig from '../.././config/config.server';
+import ServerConfig from '../../.././config/config.server';
+import HomeView from './HomeView';
 
-const auth = require('../auth')();
+const auth = require('../../auth')();
 
 export default class Home extends Component {
     constructor(props) {
@@ -24,13 +22,13 @@ export default class Home extends Component {
             signingIn: false
         }
 
-        this.logout = this.logout.bind(this);
-        this.onEmailChange = this.onEmailChange.bind(this);
+        this.logout           = this.logout.bind(this);
+        this.onEmailChange    = this.onEmailChange.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
-        this.signIn = this.signIn.bind(this);
-        this.cancelLogIn = this.cancelLogIn.bind(this);
-        this.attemptSignIn = this.attemptSignIn.bind(this);
-        this.loginIsValid = this.loginIsValid.bind(this);
+        this.signIn           = this.signIn.bind(this);
+        this.cancelLogIn      = this.cancelLogIn.bind(this);
+        this.attemptSignIn    = this.attemptSignIn.bind(this);
+        this.loginIsValid     = this.loginIsValid.bind(this);
     }
 
     cancelLogIn() {
@@ -78,7 +76,12 @@ export default class Home extends Component {
                 .send({username: email, password: password})
                 .end((err, result) => {
                     if (result.body.auth) {
-                        this.setState({loggedIn: true, signingIn: false, email: '', password: ''});
+                        const required = {
+                            email: false,
+                            password: false,
+                            failed: false
+                        }
+                        this.setState({loggedIn: true, signingIn: false, email: '', password: '', required});
                         localStorage.token = result.body.token;
                         browserHistory.push('/browse');
                     } else {
@@ -109,30 +112,24 @@ export default class Home extends Component {
         const { loggedIn, required, email, password, signingIn } = this.state;
 
         return (
-            <div>
-                <NavBar logout={this.logout} attemptSignIn={this.attemptSignIn} loggedIn={loggedIn} />
-                <div className="subnav--container">
-                    <Link to="/browse" activeClassName="nav--btn__active" className="subnav--item">Catalog</Link>
-                    <Link to="/search" activeClassName="nav--btn__active" className="subnav--item">Search</Link>
-                    <Link to="/create" activeClassName="nav--btn__active" className="subnav--item">Create</Link>
-                </div>
-                <div className="home--children__container">
-                    {
-                        signingIn ?
-                        <SignIn 
-                            loggedIn={loggedIn}
-                            required={required}
-                            email={email} 
-                            password={password} 
-                            signIn={this.signIn} 
-                            onEmailChange={this.onEmailChange}
-                            onPasswordChange={this.onPasswordChange}
-                            cancelLogIn={this.cancelLogIn}
-                        /> :
-                        this.props.children
-                    }
-                </div>
-            </div>
+            <HomeView 
+                loggedIn={loggedIn}
+                required={required}
+                email={email}
+                password={password}
+                signingIn={signingIn}
+                logout={this.logout}
+                attemptSignIn={this.attemptSignIn}
+                onEmailChange={this.onEmailChange}
+                onPasswordChange={this.onPasswordChange}
+                cancelLogIn={this.cancelLogIn}
+                children={this.props.children}
+                signIn={this.signIn}
+            />
         );
     }
 }
+
+/*
+
+ */

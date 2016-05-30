@@ -5,9 +5,9 @@ import Request from 'superagent';
 import ReactDOM from 'react-dom';
 import { browserHistory } from 'react-router';
 import CreateBookView from './CreateBookView';
-import ServerConfig from '../.././config/config.server';
+import ServerConfig from '../../.././config/config.server';
 
-export default class NewBook extends Component {
+export default class CreateBook extends Component {
     constructor(props) {
         super(props);
 
@@ -51,21 +51,23 @@ export default class NewBook extends Component {
             loggedIn: false
         };
 
-        this.onTitleChange = this.onTitleChange.bind(this);
-        this.onAuthorChange = this.onAuthorChange.bind(this);
-        this.onPublisherChange = this.onPublisherChange.bind(this);
-        this.onReleasedChange = this.onReleasedChange.bind(this);
-        this.onBorrowedChange = this.onBorrowedChange.bind(this);
-        this.onLoanedChange = this.onLoanedChange.bind(this);
-        this.onDescriptionChange = this.onDescriptionChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-        this.onGenreChange = this.onGenreChange.bind(this);
-        this.isValid = this.isValid.bind(this);
-        this.submitFormData = this.submitFormData.bind(this);
-        this.formatFormData = this.formatFormData.bind(this);
+        /* REACT BINDINGS FOR COMPONENT METHODS */
+
+        this.onTitleChange           = this.onTitleChange.bind(this);
+        this.onAuthorChange          = this.onAuthorChange.bind(this);
+        this.onPublisherChange       = this.onPublisherChange.bind(this);
+        this.onReleasedChange        = this.onReleasedChange.bind(this);
+        this.onBorrowedChange        = this.onBorrowedChange.bind(this);
+        this.onLoanedChange          = this.onLoanedChange.bind(this);
+        this.onDescriptionChange     = this.onDescriptionChange.bind(this);
+        this.onSubmit                = this.onSubmit.bind(this);
+        this.onGenreChange           = this.onGenreChange.bind(this);
+        this.isValid                 = this.isValid.bind(this);
+        this.submitFormData          = this.submitFormData.bind(this);
+        this.formatFormData          = this.formatFormData.bind(this);
         this.redirectBookDetailsPage = this.redirectBookDetailsPage.bind(this);
-        this.onChangeImage = this.onChangeImage.bind(this);
-        this.submitImageData = this.submitImageData.bind(this);
+        this.onChangeImage           = this.onChangeImage.bind(this);
+        this.submitImageData         = this.submitImageData.bind(this);
     }
 
     componentDidMount() {
@@ -77,49 +79,49 @@ export default class NewBook extends Component {
     onTitleChange(e) {
         const book = this.state.book;
         book.title = e.target.value;
-        this.setState({book: book});
+        this.setState({ book });
     }
 
     onAuthorChange(e) {
         const book = this.state.book;
         book.author[0].fullName = e.target.value;
-        this.setState({book: book});
+        this.setState({ book });
     }
 
     onPublisherChange(e) {
         const book = this.state.book;
         book.publisher = e.target.value;
-        this.setState({book: book});
+        this.setState({ book });
     }
 
     onReleasedChange(e) {
         const book = this.state.book;
         book.released = e.target.value;
-        this.setState({book: book});
+        this.setState({ book });
     }
 
     onDescriptionChange(e) {
         const book = this.state.book;
         book.description = e.target.value;
-        this.setState({book: book});
+        this.setState({ book });
     }
 
     onBorrowedChange() {
         const book = this.state.book;
         book.borrowed.from = !book.borrowed.from;
-        this.setState({book: book});
+        this.setState({ book });
     }
 
     onLoanedChange() {
         const book = this.state.book;
         book.loaned.to = !book.loaned.to;
-        this.setState({book: book});
+        this.setState({ book });
     }
 
     onGenreChange(e) {
         const book = this.state.book;
         book.genre = e.target.value;
-        this.setState({book: book});
+        this.setState({ book });
     }
 
     isValid() {

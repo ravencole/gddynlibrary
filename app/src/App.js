@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import NavLink from './components/NavLink';
-import { Link } from 'react-router';
-import NavBar from './components/NavBar';
 
 export default class App extends Component {
     constructor(props) {
@@ -9,6 +6,12 @@ export default class App extends Component {
     }
 
     render() {
+        /* 
+            THIS.PROPS.CHILDREN CONTAINS ALL OF THE COMPONENTS THAT WILL BE LOADED
+            INTO THIS MODULE BY REACT ROUTER
+
+            THIS IS ALSO THE ENTERANCE TO THE FRONT-END OF THE APP
+         */
         return (
             <div className="main--container">
                 {this.props.children}

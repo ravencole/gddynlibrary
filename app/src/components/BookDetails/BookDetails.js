@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import Request from 'superagent';
 import { Link, browserHistory } from 'react-router';
-import ServerConfig from '../.././config/config.server';
+import ServerConfig from '../../../config/config.server';
 import BookDetailsView from './BookDetailsView';
 
-const helpers = require('../.././tools/helpers')();
-const apiRoute = `${ServerConfig.api.hostname}${ServerConfig.api.port}`;
-const localRoute = `${ServerConfig.local.hostname}${ServerConfig.local.port}`;
+const helpers    = require('../../../tools/helpers')(),
+      apiRoute   = `${ServerConfig.api.hostname}${ServerConfig.api.port}`,
+      localRoute = `${ServerConfig.local.hostname}${ServerConfig.local.port}`;
 
 export default class BookDetails extends Component {
     constructor(props) {
@@ -17,10 +17,10 @@ export default class BookDetails extends Component {
             loggedIn: false
         };
 
-        this.editBook = this.editBook.bind(this);
+        this.editBook          = this.editBook.bind(this);
         this.removeBookConfirm = this.removeBookConfirm.bind(this);
-        this.cancelRemoveBook = this.cancelRemoveBook.bind(this);
-        this.removeBook = this.removeBook.bind(this);
+        this.cancelRemoveBook  = this.cancelRemoveBook.bind(this);
+        this.removeBook        = this.removeBook.bind(this);
     }
 
     componentDidMount() {
@@ -63,7 +63,8 @@ export default class BookDetails extends Component {
         
         return (
             <div>
-                { book.title && 
+                { 
+                    book.title && 
                     <BookDetailsView
                         removeModal={removeModal}
                         book={book}

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Request from 'superagent';
-import BookListItem from './BookListItem';
-import ServerConfig from '../.././config/config.server';
+import ServerConfig from '../../.././config/config.server';
+import BrowseView from './BrowseView';
 
-const helpers = require('../../tools/helpers')();
+const helpers = require('../../../tools/helpers')();
 
 export default class Browse extends Component {
     constructor(props) {
@@ -139,28 +139,13 @@ export default class Browse extends Component {
 
     render() {
         const { books } = this.state;
-
-        const renderBooks = books.map((book, index) => {
-            return <BookListItem {...book} />;
-        });
-
         return (
-            <table className="bookList--container">
-                <thead>
-                    <tr>
-                        <th>Cover</th>
-                        <th onClick={this.alphabetizeTitle} className="table--order">Title</th>
-                        <th onClick={this.alphabetizeByAuthor} className="table--order">Author</th>
-                        <th>Genres</th>
-                        <th>Borrowed</th>
-                        <th>Loaned</th>
-                        <th onClick={this.sortByReleaseDate} className="table--order">Released</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {renderBooks}
-                </tbody>
-            </table>
+            <BrowseView 
+                alphabetizeTitle={this.alphabetizeTitle}
+                alphabetizeByAuthor={this.alphabetizeByAuthor}
+                sortByReleaseDate={this.sortByReleaseDate}
+                books={books}
+            />
         );
     }
 }
